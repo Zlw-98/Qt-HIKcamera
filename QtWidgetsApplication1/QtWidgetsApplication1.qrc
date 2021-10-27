@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/QtWidgetsApplication1">
+        <file>res/guitar.jpg</file>
+        <file>res/8114/r9.ico</file>
+        <file>res/8122/w6.ico</file>
+    </qresource>
+</RCC>
