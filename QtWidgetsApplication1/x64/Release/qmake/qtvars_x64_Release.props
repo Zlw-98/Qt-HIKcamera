@@ -1,7 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
 <Qt_DEFINES_>UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG</Qt_DEFINES_>
-<Qt_INCLUDEPATH_>"D:\Machine Vision\QtWidgetsApplication1\QtWidgetsApplication1\x64\Release\qmake\temp";D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\include;D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\include\QtWidgets;D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\include\QtGui;D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\include\QtANGLE;D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\include\QtCore;/include;D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\mkspecs\win32-msvc</Qt_INCLUDEPATH_>
+<Qt_INCLUDEPATH_>"D:\Machine Vision\QtWidgetsApplication1-v1\QtWidgetsApplication1\x64\Release\qmake\temp";D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\include;D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\include\QtWidgets;D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\include\QtGui;D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\include\QtANGLE;D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\include\QtCore;/include;D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\mkspecs\win32-msvc</Qt_INCLUDEPATH_>
 <Qt_LIBS_>D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\lib\Qt5Widgets.lib;D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\lib\Qt5Gui.lib;D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\lib\Qt5Core.lib;D:\ProgramFiles\Qt\Qt5\5.12.11\msvc2017_64\lib\qtmain.lib;shell32.lib</Qt_LIBS_>
 <Qt_LIBPATH_>C:\openssl\lib;C:\Utils\my_sql\mysql-5.6.11-winx64\lib;C:\Utils\postgresql\pgsql\lib</Qt_LIBPATH_>
 <QMake_QT_SYSROOT_></QMake_QT_SYSROOT_>

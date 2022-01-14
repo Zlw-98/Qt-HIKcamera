@@ -1,3 +1,14 @@
-﻿  QtWidgetsApplication1.cpp
+﻿  Reading Qt configuration (D:/ProgramFiles/Qt/Qt5/5.12.11/msvc2017_64/bin/qmake)
+  Detect.cpp
+  MvCamera.cpp
+  myLabel.cpp
+  QtWidgetsApplication1.cpp
+  main.cpp
   _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
-  QtWidgetsApplication1.vcxproj -> D:\Machine Vision\QtWidgetsApplication1\x64\Debug\QtWidgetsApplication1.exe
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  qrc_QtWidgetsApplication1.cpp
+  moc_QtWidgetsApplication1.cpp
+  moc_myLabel.cpp
+  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+  QtWidgetsApplication1.vcxproj -> D:\Machine Vision\QtWidgetsApplication1-v1\x64\Debug\QtWidgetsApplication1.exe

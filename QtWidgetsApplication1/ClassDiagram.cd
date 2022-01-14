@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Detect">
+    <Position X="3.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EgAYDFAQGQAAKAAAxIQAACQAgAAACEwAiAAAAIIADAA=</HashCode>
+      <FileName>Detect.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMvCamera" Collapsed="true">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFAGCAIABLAMAIC1iAAICAAIgAQAAWABAAABAGASxA=</HashCode>
+      <FileName>MvCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ui_QtWidgetsApplication1Class" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wNFQQQCPAcWUZBBADAZCGKkIFQSJqZkCsIBGAUTmT4I=</HashCode>
+      <FileName>x64\Debug\uic\ui_QtWidgetsApplication1.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QtWidgetsApplication1" Collapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>xCYBgYRIgSBAXM5mFETzCh6DFgCQECGWiAQF41ECwJk=</HashCode>
+      <FileName>QtWidgetsApplication1.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="myLabel">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AzQECKYQACVAQKDgRrBBEAFUgBMSHQkiCggtTOEAIAg=</HashCode>
+      <FileName>myLabel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ui::QtWidgetsApplication1Class" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>x64\Debug\uic\ui_QtWidgetsApplication1.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="CurrentCaptureState" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAABAAAAAAAAACAAABAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>myLabel.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Mode" Collapsed="true">
+    <Position X="6" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>myLabel.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="clickedBtn" Collapsed="true">
+    <Position X="6" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wAAAgABAICAAQAAiBAACAASCAgCAACASiAAAgAECAAA=</HashCode>
+      <FileName>myLabel.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

@@ -48,7 +48,8 @@ public:
     QHBoxLayout *horizontalLayout_11;
     QPushButton *radius_Btn;
     QPushButton *diameter_Btn;
-    QPushButton *angle_Btn;
+    QPushButton *arcAngle_Btn;
+    QPushButton *linlinAngle_Btn;
     QWidget *element_widget;
     QWidget *layoutWidget1;
     QVBoxLayout *verticalLayout;
@@ -59,17 +60,24 @@ public:
     QPushButton *circle_Btn;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *arc_Btn;
-    QPushButton *circtr_Btn;
     QPushButton *intersection_Btn;
     QPushButton *cirlintan_Btn;
-    QHBoxLayout *horizontalLayout_3;
     QPushButton *circirtan_Btn;
+    QHBoxLayout *horizontalLayout_3;
     QPushButton *arcmid_Btn;
     QPushButton *linmid_Btn;
+    QPushButton *customArc_Btn;
     QWidget *assist_widget;
     QWidget *layoutWidget2;
     QHBoxLayout *horizontalLayout_12;
     QPushButton *chamfer_Btn;
+    QPushButton *perpendicularity_Btn;
+    QPushButton *roundness_Btn;
+    QWidget *layoutWidget_2;
+    QHBoxLayout *horizontalLayout_13;
+    QPushButton *parallelism_Btn;
+    QPushButton *axiality_Btn;
+    QPushButton *taper_Btn;
     QWidget *gridLayoutWidget;
     QGridLayout *option_Layout;
     QWidget *gridLayoutWidget_2;
@@ -103,10 +111,12 @@ public:
     QWidget *parameter_widget;
     QWidget *gridLayoutWidget_4;
     QGridLayout *gridLayout;
-    QLabel *label;
-    QLineEdit *GainEdit;
     QLabel *label_2;
+    QLineEdit *GainEdit;
     QLineEdit *ExposureEdit;
+    QLabel *label_3;
+    QLineEdit *FrameEdit;
+    QLabel *label;
     QPushButton *SetParameter_Btn;
     QPushButton *GetParameter_Btn;
     QWidget *SaveImageWidget;
@@ -122,7 +132,7 @@ public:
     {
         if (QtWidgetsApplication1Class->objectName().isEmpty())
             QtWidgetsApplication1Class->setObjectName(QString::fromUtf8("QtWidgetsApplication1Class"));
-        QtWidgetsApplication1Class->resize(1280, 800);
+        QtWidgetsApplication1Class->resize(1680, 900);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/QtWidgetsApplication1/res/8114/r9.ico"), QSize(), QIcon::Normal, QIcon::Off);
         QtWidgetsApplication1Class->setWindowIcon(icon);
@@ -147,7 +157,7 @@ public:
         assist_Button->setFont(font);
         measure_widget = new QWidget(centralWidget);
         measure_widget->setObjectName(QString::fromUtf8("measure_widget"));
-        measure_widget->setGeometry(QRect(970, 20, 551, 331));
+        measure_widget->setGeometry(QRect(990, 10, 551, 331));
         layoutWidget = new QWidget(measure_widget);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
         layoutWidget->setGeometry(QRect(0, 0, 551, 331));
@@ -197,10 +207,15 @@ public:
 
         horizontalLayout_11->addWidget(diameter_Btn);
 
-        angle_Btn = new QPushButton(layoutWidget);
-        angle_Btn->setObjectName(QString::fromUtf8("angle_Btn"));
+        arcAngle_Btn = new QPushButton(layoutWidget);
+        arcAngle_Btn->setObjectName(QString::fromUtf8("arcAngle_Btn"));
 
-        horizontalLayout_11->addWidget(angle_Btn);
+        horizontalLayout_11->addWidget(arcAngle_Btn);
+
+        linlinAngle_Btn = new QPushButton(layoutWidget);
+        linlinAngle_Btn->setObjectName(QString::fromUtf8("linlinAngle_Btn"));
+
+        horizontalLayout_11->addWidget(linlinAngle_Btn);
 
 
         verticalLayout_2->addLayout(horizontalLayout_11);
@@ -208,7 +223,7 @@ public:
         element_widget = new QWidget(centralWidget);
         element_widget->setObjectName(QString::fromUtf8("element_widget"));
         element_widget->setEnabled(true);
-        element_widget->setGeometry(QRect(-420, 380, 541, 361));
+        element_widget->setGeometry(QRect(-270, 440, 541, 361));
         layoutWidget1 = new QWidget(element_widget);
         layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
         layoutWidget1->setGeometry(QRect(0, 0, 541, 361));
@@ -220,7 +235,7 @@ public:
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        horizontalLayout->setContentsMargins(-1, 80, -1, -1);
+        horizontalLayout->setContentsMargins(-1, 40, -1, -1);
         line_Btn = new QPushButton(layoutWidget1);
         line_Btn->setObjectName(QString::fromUtf8("line_Btn"));
 
@@ -247,16 +262,11 @@ public:
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        horizontalLayout_2->setContentsMargins(-1, 80, -1, -1);
+        horizontalLayout_2->setContentsMargins(-1, 40, -1, -1);
         arc_Btn = new QPushButton(layoutWidget1);
         arc_Btn->setObjectName(QString::fromUtf8("arc_Btn"));
 
         horizontalLayout_2->addWidget(arc_Btn);
-
-        circtr_Btn = new QPushButton(layoutWidget1);
-        circtr_Btn->setObjectName(QString::fromUtf8("circtr_Btn"));
-
-        horizontalLayout_2->addWidget(circtr_Btn);
 
         intersection_Btn = new QPushButton(layoutWidget1);
         intersection_Btn->setObjectName(QString::fromUtf8("intersection_Btn"));
@@ -268,18 +278,18 @@ public:
 
         horizontalLayout_2->addWidget(cirlintan_Btn);
 
+        circirtan_Btn = new QPushButton(layoutWidget1);
+        circirtan_Btn->setObjectName(QString::fromUtf8("circirtan_Btn"));
+
+        horizontalLayout_2->addWidget(circirtan_Btn);
+
 
         verticalLayout->addLayout(horizontalLayout_2);
 
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setSpacing(6);
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        horizontalLayout_3->setContentsMargins(-1, 80, -1, -1);
-        circirtan_Btn = new QPushButton(layoutWidget1);
-        circirtan_Btn->setObjectName(QString::fromUtf8("circirtan_Btn"));
-
-        horizontalLayout_3->addWidget(circirtan_Btn);
-
+        horizontalLayout_3->setContentsMargins(-1, 40, -1, -1);
         arcmid_Btn = new QPushButton(layoutWidget1);
         arcmid_Btn->setObjectName(QString::fromUtf8("arcmid_Btn"));
 
@@ -290,16 +300,21 @@ public:
 
         horizontalLayout_3->addWidget(linmid_Btn);
 
+        customArc_Btn = new QPushButton(layoutWidget1);
+        customArc_Btn->setObjectName(QString::fromUtf8("customArc_Btn"));
+
+        horizontalLayout_3->addWidget(customArc_Btn);
+
 
         verticalLayout->addLayout(horizontalLayout_3);
 
         assist_widget = new QWidget(centralWidget);
         assist_widget->setObjectName(QString::fromUtf8("assist_widget"));
         assist_widget->setEnabled(true);
-        assist_widget->setGeometry(QRect(-460, 10, 539, 419));
+        assist_widget->setGeometry(QRect(310, 380, 539, 419));
         layoutWidget2 = new QWidget(assist_widget);
         layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
-        layoutWidget2->setGeometry(QRect(0, 20, 539, 361));
+        layoutWidget2->setGeometry(QRect(0, 20, 539, 181));
         horizontalLayout_12 = new QHBoxLayout(layoutWidget2);
         horizontalLayout_12->setSpacing(6);
         horizontalLayout_12->setContentsMargins(11, 11, 11, 11);
@@ -309,6 +324,39 @@ public:
         chamfer_Btn->setObjectName(QString::fromUtf8("chamfer_Btn"));
 
         horizontalLayout_12->addWidget(chamfer_Btn);
+
+        perpendicularity_Btn = new QPushButton(layoutWidget2);
+        perpendicularity_Btn->setObjectName(QString::fromUtf8("perpendicularity_Btn"));
+
+        horizontalLayout_12->addWidget(perpendicularity_Btn);
+
+        roundness_Btn = new QPushButton(layoutWidget2);
+        roundness_Btn->setObjectName(QString::fromUtf8("roundness_Btn"));
+
+        horizontalLayout_12->addWidget(roundness_Btn);
+
+        layoutWidget_2 = new QWidget(assist_widget);
+        layoutWidget_2->setObjectName(QString::fromUtf8("layoutWidget_2"));
+        layoutWidget_2->setGeometry(QRect(0, 210, 539, 181));
+        horizontalLayout_13 = new QHBoxLayout(layoutWidget_2);
+        horizontalLayout_13->setSpacing(6);
+        horizontalLayout_13->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_13->setObjectName(QString::fromUtf8("horizontalLayout_13"));
+        horizontalLayout_13->setContentsMargins(0, 0, 0, 0);
+        parallelism_Btn = new QPushButton(layoutWidget_2);
+        parallelism_Btn->setObjectName(QString::fromUtf8("parallelism_Btn"));
+
+        horizontalLayout_13->addWidget(parallelism_Btn);
+
+        axiality_Btn = new QPushButton(layoutWidget_2);
+        axiality_Btn->setObjectName(QString::fromUtf8("axiality_Btn"));
+
+        horizontalLayout_13->addWidget(axiality_Btn);
+
+        taper_Btn = new QPushButton(layoutWidget_2);
+        taper_Btn->setObjectName(QString::fromUtf8("taper_Btn"));
+
+        horizontalLayout_13->addWidget(taper_Btn);
 
         gridLayoutWidget = new QWidget(centralWidget);
         gridLayoutWidget->setObjectName(QString::fromUtf8("gridLayoutWidget"));
@@ -382,7 +430,7 @@ public:
 
         layoutWidget_4 = new QWidget(centralWidget);
         layoutWidget_4->setObjectName(QString::fromUtf8("layoutWidget_4"));
-        layoutWidget_4->setGeometry(QRect(420, 680, 541, 361));
+        layoutWidget_4->setGeometry(QRect(440, 690, 541, 361));
         verticalLayout_3 = new QVBoxLayout(layoutWidget_4);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -447,53 +495,64 @@ public:
         parameter_widget->setGeometry(QRect(740, 210, 201, 121));
         gridLayoutWidget_4 = new QWidget(parameter_widget);
         gridLayoutWidget_4->setObjectName(QString::fromUtf8("gridLayoutWidget_4"));
-        gridLayoutWidget_4->setGeometry(QRect(0, 0, 195, 71));
+        gridLayoutWidget_4->setGeometry(QRect(0, 0, 195, 88));
         gridLayout = new QGridLayout(gridLayoutWidget_4);
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         gridLayout->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(gridLayoutWidget_4);
-        label->setObjectName(QString::fromUtf8("label"));
+        label_2 = new QLabel(gridLayoutWidget_4);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
 
-        gridLayout->addWidget(label, 0, 0, 1, 1);
+        gridLayout->addWidget(label_2, 1, 0, 1, 1);
 
         GainEdit = new QLineEdit(gridLayoutWidget_4);
         GainEdit->setObjectName(QString::fromUtf8("GainEdit"));
 
         gridLayout->addWidget(GainEdit, 1, 1, 1, 1);
 
-        label_2 = new QLabel(gridLayoutWidget_4);
-        label_2->setObjectName(QString::fromUtf8("label_2"));
-
-        gridLayout->addWidget(label_2, 1, 0, 1, 1);
-
         ExposureEdit = new QLineEdit(gridLayoutWidget_4);
         ExposureEdit->setObjectName(QString::fromUtf8("ExposureEdit"));
 
         gridLayout->addWidget(ExposureEdit, 0, 1, 1, 1);
 
+        label_3 = new QLabel(gridLayoutWidget_4);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+        label_3->setTextFormat(Qt::AutoText);
+
+        gridLayout->addWidget(label_3, 2, 0, 1, 1);
+
+        FrameEdit = new QLineEdit(gridLayoutWidget_4);
+        FrameEdit->setObjectName(QString::fromUtf8("FrameEdit"));
+
+        gridLayout->addWidget(FrameEdit, 2, 1, 1, 1);
+
+        label = new QLabel(gridLayoutWidget_4);
+        label->setObjectName(QString::fromUtf8("label"));
+
+        gridLayout->addWidget(label, 0, 0, 1, 1);
+
         SetParameter_Btn = new QPushButton(parameter_widget);
         SetParameter_Btn->setObjectName(QString::fromUtf8("SetParameter_Btn"));
-        SetParameter_Btn->setGeometry(QRect(0, 80, 93, 28));
+        SetParameter_Btn->setGeometry(QRect(0, 90, 93, 28));
         GetParameter_Btn = new QPushButton(parameter_widget);
         GetParameter_Btn->setObjectName(QString::fromUtf8("GetParameter_Btn"));
-        GetParameter_Btn->setGeometry(QRect(100, 80, 93, 28));
+        GetParameter_Btn->setGeometry(QRect(100, 90, 93, 28));
         SaveImageWidget = new QWidget(centralWidget);
         SaveImageWidget->setObjectName(QString::fromUtf8("SaveImageWidget"));
-        SaveImageWidget->setGeometry(QRect(260, 360, 221, 61));
+        SaveImageWidget->setGeometry(QRect(140, 330, 331, 61));
         SaveBMP_Btn = new QPushButton(SaveImageWidget);
         SaveBMP_Btn->setObjectName(QString::fromUtf8("SaveBMP_Btn"));
-        SaveBMP_Btn->setGeometry(QRect(10, 0, 93, 28));
+        SaveBMP_Btn->setGeometry(QRect(10, 0, 151, 28));
         SaveJPG_Btn = new QPushButton(SaveImageWidget);
         SaveJPG_Btn->setObjectName(QString::fromUtf8("SaveJPG_Btn"));
-        SaveJPG_Btn->setGeometry(QRect(110, 0, 93, 28));
+        SaveJPG_Btn->setGeometry(QRect(170, 0, 151, 28));
         SaveTIFF_Btn = new QPushButton(SaveImageWidget);
         SaveTIFF_Btn->setObjectName(QString::fromUtf8("SaveTIFF_Btn"));
-        SaveTIFF_Btn->setGeometry(QRect(10, 30, 93, 28));
+        SaveTIFF_Btn->setGeometry(QRect(10, 30, 151, 28));
         SavePNG_Btn = new QPushButton(SaveImageWidget);
         SavePNG_Btn->setObjectName(QString::fromUtf8("SavePNG_Btn"));
-        SavePNG_Btn->setGeometry(QRect(110, 30, 93, 28));
+        SavePNG_Btn->setGeometry(QRect(170, 30, 151, 28));
         QtWidgetsApplication1Class->setCentralWidget(centralWidget);
         mainToolBar = new QToolBar(QtWidgetsApplication1Class);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -503,7 +562,7 @@ public:
         QtWidgetsApplication1Class->setStatusBar(statusBar);
         menuBar = new QMenuBar(QtWidgetsApplication1Class);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1280, 26));
+        menuBar->setGeometry(QRect(0, 0, 1680, 26));
         QtWidgetsApplication1Class->setMenuBar(menuBar);
 
         retranslateUi(QtWidgetsApplication1Class);
@@ -533,19 +592,25 @@ public:
         circirdis_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\234\206-\345\234\206\350\267\235\347\246\273", nullptr));
         radius_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\215\212\345\276\204", nullptr));
         diameter_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\347\233\264\345\276\204", nullptr));
-        angle_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\350\247\222\345\272\246", nullptr));
+        arcAngle_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\234\206\345\274\247\350\247\222\345\272\246", nullptr));
+        linlinAngle_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\347\272\277\347\272\277\350\247\222\345\272\246", nullptr));
         line_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\347\233\264\347\272\277", nullptr));
         peaklin_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\263\260\345\200\274\347\272\277", nullptr));
         ctrlin_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\344\270\255\345\277\203\347\272\277", nullptr));
         circle_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\234\206", nullptr));
         arc_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\234\206\345\274\247", nullptr));
-        circtr_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\234\206\345\277\203", nullptr));
         intersection_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\347\233\264\347\272\277\344\272\244\347\202\271", nullptr));
         cirlintan_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\234\206-\347\272\277\345\210\207\347\202\271", nullptr));
         circirtan_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\234\206-\345\234\206\345\210\207\347\202\271", nullptr));
-        arcmid_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\234\206\345\274\247\344\270\255\345\277\203\347\202\271", nullptr));
+        arcmid_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\234\206\345\274\247\344\270\255\347\202\271", nullptr));
         linmid_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\347\272\277\346\256\265\344\270\255\347\202\271", nullptr));
+        customArc_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\350\207\252\345\256\232\344\271\211\345\234\206\345\274\247", nullptr));
         chamfer_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\200\222\350\247\222", nullptr));
+        perpendicularity_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\236\202\347\233\264\345\272\246", nullptr));
+        roundness_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\234\206\345\272\246", nullptr));
+        parallelism_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\271\263\350\241\214\345\272\246", nullptr));
+        axiality_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\220\214\350\275\264\345\272\246", nullptr));
+        taper_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\351\224\245\345\272\246", nullptr));
         Show_label->setText(QString());
         Rect_x->setText(QApplication::translate("QtWidgetsApplication1Class", "x", nullptr));
         Rect_w->setText(QApplication::translate("QtWidgetsApplication1Class", "w", nullptr));
@@ -559,8 +624,9 @@ public:
         CloseDevice_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\205\263\351\227\255\350\256\276\345\244\207", nullptr));
         CtnMode_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\350\277\236\347\273\255\346\250\241\345\274\217", nullptr));
         TriggerMode_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\350\247\246\345\217\221\346\250\241\345\274\217", nullptr));
-        label->setText(QApplication::translate("QtWidgetsApplication1Class", "\346\233\235\345\205\211", nullptr));
         label_2->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\242\236\347\233\212", nullptr));
+        label_3->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\270\247\347\216\207(1~9)", nullptr));
+        label->setText(QApplication::translate("QtWidgetsApplication1Class", "\346\233\235\345\205\211", nullptr));
         SetParameter_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\217\202\346\225\260\350\256\276\347\275\256", nullptr));
         GetParameter_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\345\217\202\346\225\260\350\216\267\345\217\226", nullptr));
         SaveBMP_Btn->setText(QApplication::translate("QtWidgetsApplication1Class", "\344\277\235\345\255\230BMP", nullptr));

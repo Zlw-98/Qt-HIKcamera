@@ -13,16 +13,54 @@
 #include "Detect.h"
 #include "MvCamera.h"
 #include "afxwin.h"
+#include "Mmsystem.h"
+#pragma comment(lib, "winmm.lib")
 
 //using namespace cv;
 namespace Ui { class QtWidgetsApplication1; }
 
+
+//鼠标点击事件
+enum ClickedBtn {
+    lineBtn_clicked = 0,     //直线
+    peakLinBtn_clicked = 1,  //峰值线
+    ctrLinBtn_clicked = 2,   //中心线
+    circleBtn_clicked = 3,   //圆
+    arcBtn_clicked = 4,      //圆弧
+    ptptdisBtn_clicked = 5,  //点-点距离
+    ptlindisBtn_clicked = 6, //点-线距离
+    arcmidBtn_clicked = 7,   //圆弧中点
+    cirlintanBtn_clicked = 8,   //圆-线切点
+    intersectionBtn_clicked = 9,//线-线交点
+    linmidBtn_clicked = 10,   //线段中点
+    circirtanBtn_clicked = 11,//圆圆切点
+    circirdisBtn_clicked = 12,//圆圆距离
+    linlindisBtn_clicked = 13,//线线距离
+    radiusBtn_clicked = 14,   //半径
+    diameterBtn_clicked = 15, //直径
+    arcAngleBtn_clicked = 16, //圆弧角度
+    linlinAngleBtn_clicked = 17,//线线角度
+    chamferBtn_clicked = 18,  //倒角
+    perpendicularityBtn_clicked = 19,//垂直度
+    roundnessBtn_clicked = 20,//圆度
+    parallelismBtn_clicked = 21,//平行度
+    axialityBtn_clicked = 22,//同轴度
+    taperBtn_clicked = 23,//锥度
+    customArcBtn_clicked = 24,//自定义圆弧
+    SCALED = 25,//缩放
+
+};
 
 class QtWidgetsApplication1 : public QMainWindow
 {
     Q_OBJECT
 
 public:
+
+    DWORD delayTimeBegin;
+    DWORD delayTimeEnd;
+    DWORD processTime;
+
     static bool optEnable;
 
     Ui::QtWidgetsApplication1Class ui;
@@ -35,13 +73,15 @@ public:
     void PopDialog(QString str);//弹出警告框
     QPixmap pixmap;
     QPixmap fitpixmap;
+    cv::Mat srcImage;
+    ClickedBtn clickedBtn;
     float scaled_ratio;
     void paintEvent(QPaintEvent*);
+    int GetClicked(int);
 
 /*ch: MVS控件对应变量 | en:Control corresponding variable*/
 public:
     int SetTriggerSource();//设置软触发
-    cv::Mat srcImage;
 private:
     BOOL                    m_bSoftWareTriggerCheck;
     CComboBox               m_ctrlDeviceCombo;                // ch:枚举到的设备 | en:Enumerated device
@@ -72,6 +112,8 @@ private:
     int GetGain();                      // ch:获取增益
     int SetExposureTime();              // ch:设置曝光时间 | en:Set Exposure Time
     int SetGain();                      // ch:设置增益 | en:Set Gain
+    int GetFrameRate();                  // ch:设置帧率 | en:Set Frame Rate
+    int SetFrameRate();
     void EnableControls(BOOL bIsCameraReady);
     bool Convert2Mat(MV_FRAME_OUT_INFO_EX* pstImageInfo, unsigned char* pData);
 
@@ -113,6 +155,11 @@ signals:
 
 private slots:
    void trigerMenu(QAction* act);//菜单触发键
+   void on_PresetBtn_clicked();//图像重置按钮
+   void on_clearBtn_clicked();//清空按钮
+   void on_logBtn_clicked();//导出按钮
+   void on_loadparaBtn_clicked();//加载参数文件
+
    void readframe();
    void on_StartCamera_clicked();//Opencv打开电脑摄像头
    void bnclose();//Opencv关闭电脑摄像头
@@ -121,25 +168,58 @@ private slots:
    void on_ctrlinBtn_clicked();//点击中心线按钮
    void on_circleBtn_clicked();//点击圆按钮
    void on_arcBtn_clicked();//点击圆弧按钮
-   //void on_circtrBtn_clicked();//点击圆心按钮
-   //void on_intersectionBtn_clicked();//点击直线交点按钮
-   //void on_cirlintanBtn_clicked();//点击圆线切点按钮
-   //void on_circirtanBtn_clicked();//点击圆圆切点按钮
-   //void on_arcmidBtn_clicked();//点击圆弧中点按钮
-   //void on_linmidBtn_clicked();//点击线段中点按钮
-   void on_ptptdisBtn_clicked();
-   void on_ptlindisBtn_clicked();
+   void on_intersectionBtn_clicked();//点击直线交点按钮
+   void on_circirtanBtn_clicked();//点击圆圆切点按钮
+   void on_arcmidBtn_clicked();//点击圆弧中点按钮
+   void on_cirlintanBtn_clicked();//点击圆-线切点按钮
+   void on_linmidBtn_clicked();//点击线段中点按钮
+   void on_customArcBtn_clicked();//点击自定义圆弧按钮
+
+   void on_ptptdisBtn_clicked();//点击点-点距离按钮
+   void on_ptlindisBtn_clicked();//点击点-线距离按钮
+   void on_linlindisBtn_clicked();//点击线-线距离按钮
+   void on_circirdisBtn_clicked();//点击圆-圆距离按钮
+   void on_radiusBtn_clicked();//点击半径按钮
+   void on_diameterBtn_clicked();//点击直径按钮
+   void on_arcAngleBtn_clicked();//点击圆弧角度按钮
+   void on_linlinAngleBtn_clicked();//点击线线角度按钮
    
-   
+   void on_chamferBtn_clicked();    //点击倒角按钮
+   void on_perpendicularityBtn_clicked();//点击垂直度按钮
+   void on_roundnessBtn_clicked();  //点击圆度按钮
+   void on_parallelismBtn_clicked();//点击平行度按钮
+   void on_axialityBtn_clicked();   //点击同轴度按钮
+   void on_taperBtn_clicked();      //点击锥度按钮
 
 
-
+private slots:
    //绘制矩形
    void StartPointSlot(QPointF p);
    void StopPointSlot(QPointF p);
    //void PointTextChangeSlot(QString);
    //移动矩形
    void StartMoveRectSlot(QRectF);//移动时宽和高不变，故不需要stopslot
+/*
+private:
+    qreal m_ZoomValue = 1.0;
+    int m_XPtInterval = 0;
+    int m_YPtInterval = 0;
+    QPoint m_OldPos;
+    /*
+private:
+    bool m_Pressed;
+    void paint();
+    bool eventFilter(QObject* obj, QEvent* event);
+    //缩放和平移
+    void onZoomInImage(void);
+    void onZoomOutImage(void);
+    void onPresetImage(void);
+
+    //滚轮事件
+    void wheelEvent(QWheelEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;*/
 
 
 };

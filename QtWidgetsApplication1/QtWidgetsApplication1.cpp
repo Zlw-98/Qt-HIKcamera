@@ -26,25 +26,41 @@ QtWidgetsApplication1::QtWidgetsApplication1(QWidget *parent)
 {
 
     ui.setupUi(this);                  //Qt自动生成
+	//ui.Show_label->installEventFilter(this); //在Show_label中显示
     setWindowTitle("Machine Vision");  //定义对话框窗口标题
-    setFixedSize(this->width(), this->height());
-
-	ui.gridLayoutWidget_2->setGeometry(QRect(10, 10, 640, 470));//设置Show_Label和label_img的范围大小，通过layout所在的widget设置
+    //setFixedSize(this->width(), this->height());
 	
-	ui.Rect_info_widget->setGeometry(QRect(-60, 660,470, 80));//设置矩形框信息栏的位置
+	//4096x3000->1024x750    1个像素0.0196mm
+	//ui.gridLayoutWidget_2->setGeometry(QRect(10, 10,1024, 750));//设置Show_Label和label_img的范围大小，通过layout所在的widget设置
+	
+	ui.Rect_info_widget->setGeometry(QRect(-60, 760,470, 80));//设置矩形框信息栏的位置
 	label_img = new myLabel(this);
 
 	label_img->setGeometry(0, 0, 0, 0);      //设置初始label_img不显示
 
     ////MVS相机相关按钮////
-	ui.m_ctrlDeviceCombo->setGeometry(QRect(880, 20, 360, 25));//设备列表
-	ui.OpenDevice_Btn->setDisabled(TRUE);//将按钮设置为不可点击状态
+	ui.m_ctrlDeviceCombo->setGeometry(QRect(1300, 12, 360, 25));//设备列表
+	//将按钮设置为不可点击状态
+	ui.OpenDevice_Btn->setDisabled(TRUE);
 	ui.CloseDevice_Btn->setDisabled(TRUE);
 	ui.StartGrabbing_Btn->setDisabled(TRUE);
 	ui.StopGrabbing_Btn->setDisabled(TRUE);
-	ui.InitializeWidget->setGeometry(QRect(660, 10, 200, 180));
-	ui.parameter_widget->setGeometry(QRect(660, 180, 200,200));
-	ui.SaveImageWidget->setGeometry(QRect(880, 60, 220, 100));
+	ui.SoftTrigger_Btn->setDisabled(TRUE);
+	ui.GetParameter_Btn->setDisabled(TRUE);
+	ui.SetParameter_Btn->setDisabled(TRUE);
+	ui.SaveBMP_Btn->setDisabled(TRUE);
+	ui.SaveJPG_Btn->setDisabled(TRUE);
+	ui.SavePNG_Btn->setDisabled(TRUE);
+	ui.SaveTIFF_Btn->setDisabled(TRUE);
+	ui.LoadPara_Btn->setDisabled(TRUE);
+
+	ui.TriggerSrc_Btn->addItem(QString::fromLocal8Bit("硬触发"));
+	ui.TriggerSrc_Btn->addItem(QString::fromLocal8Bit("软触发"));
+
+	//ui.InitializeWidget->setGeometry(QRect(1050, 10, 200, 180)); //660
+	//ui.parameter_widget->setGeometry(QRect(1050, 180, 200,120));
+	//ui.SaveImageWidget->setGeometry(QRect(1290, 60, 320, 100));  //900
+	ui.CtnMode_Btn->setChecked(1);          //设置初始状态为连续模式
 	//ui.SaveBMP_Btn->setGeometry(QRect(880, 60, 100, 50));
 
 	connect(ui.FindDevice_Btn, SIGNAL(clicked()), this, SLOT(on_FindDeviceBtn_clicked()));
@@ -68,12 +84,12 @@ QtWidgetsApplication1::QtWidgetsApplication1(QWidget *parent)
     ui.assist_widget->hide();
     ui.measure_widget->hide();
 
-    ui.element_Button->setGeometry(700, 320, 120, 60);
-    ui.measure_Button->setGeometry(900, 320, 120, 60);
-    ui.assist_Button->setGeometry(1100, 320, 120, 60);
+    ui.element_Button->setGeometry(1100, 320, 120, 60);//700
+    ui.measure_Button->setGeometry(1300, 320, 120, 60);//900
+    ui.assist_Button->setGeometry(1500, 320, 120, 60);//1100
 
 
-    ui.gridLayoutWidget->setGeometry(690, 360, 550, 420);
+    //ui.gridLayoutWidget->setGeometry(1090, 360, 550, 420);//690
     //ui.option_Layout->setContentsMargins(20, 30, 60, 20);
 
     ui.option_Layout->addWidget(ui.element_widget, 0, 0, 1, 1);
@@ -83,19 +99,19 @@ QtWidgetsApplication1::QtWidgetsApplication1(QWidget *parent)
 	ui.Show_label->setGeometry(10, 10, 640, 640);
 	ui.Show_label->setStyleSheet("QLabel{border:2px solid rgb(180, 180, 180);}");
 	ui.photo_layout->addWidget(ui.Show_label, 0, 0, 1, 1);
-
+	/*
 	StartCamera = new QPushButton(tr("Start/Stop"), this);
-	StartCamera->setGeometry(QRect(400, 700, 100, 50));
+	StartCamera->setGeometry(QRect(350, 700, 100, 50));
 	StartCamera->setFont(QFont("Times", 8, QFont::Bold));
 	connect(StartCamera, SIGNAL(clicked()), this, SLOT(on_StartCamera_clicked()));
 	StartCamera->hide();
 
 	CloseCamera = new QPushButton(tr("Close"), this);
-	CloseCamera->setGeometry(QRect(550, 700, 100, 50));
+	CloseCamera->setGeometry(QRect(450, 700, 100, 50));
 	CloseCamera->setFont(QFont("Times", 8, QFont::Bold));
 	connect(CloseCamera, SIGNAL(clicked()), this, SLOT(bnclose()));
 	CloseCamera->hide();
-
+	*/
     //ui.chamfer_Btn->setGeometry(890, 570, 130, 60);
 
     //total_Layout->addWidget(widget_1, 0, 0, 1, 1);
@@ -103,9 +119,13 @@ QtWidgetsApplication1::QtWidgetsApplication1(QWidget *parent)
     QMenu* file_menu= new QMenu(QString("File"));
     this->menuBar()->addMenu(file_menu);
     file_menu->addAction("Open");
-	file_menu->addAction("Camera");
+	//file_menu->addAction("Camera");
     QAction& addAction(const QString & text);
     connect(menuBar(), SIGNAL(triggered(QAction*)), this, SLOT(trigerMenu(QAction*)));
+	connect(ui.Preset_Btn, SIGNAL(clicked()), this, SLOT(on_PresetBtn_clicked()));
+	connect(ui.clear_Btn, SIGNAL(clicked()), this, SLOT(on_clearBtn_clicked()));
+	connect(ui.log_Btn, SIGNAL(clicked()), this, SLOT(on_logBtn_clicked()));
+	connect(ui.LoadPara_Btn, SIGNAL(clicked()), this, SLOT(on_loadparaBtn_clicked()));
 
 	//按钮点击事件
 	connect(ui.line_Btn, SIGNAL(clicked()), this, SLOT(on_lineBtn_clicked()));
@@ -115,16 +135,73 @@ QtWidgetsApplication1::QtWidgetsApplication1(QWidget *parent)
 	connect(ui.ptlindis_Btn, SIGNAL(clicked()), this, SLOT(on_ptlindisBtn_clicked()));
 	connect(ui.circle_Btn, SIGNAL(clicked()), this, SLOT(on_circleBtn_clicked()));
 	connect(ui.arc_Btn, SIGNAL(clicked()), this, SLOT(on_arcBtn_clicked()));
-
+	connect(ui.arcmid_Btn, SIGNAL(clicked()), this, SLOT(on_arcmidBtn_clicked()));
+	connect(ui.cirlintan_Btn, SIGNAL(clicked()), this, SLOT(on_cirlintanBtn_clicked()));
+	connect(ui.intersection_Btn, SIGNAL(clicked()), this, SLOT(on_intersectionBtn_clicked()));
+	connect(ui.linmid_Btn, SIGNAL(clicked()), this, SLOT(on_linmidBtn_clicked()));
+	connect(ui.circirtan_Btn, SIGNAL(clicked()), this, SLOT(on_circirtanBtn_clicked()));
+	connect(ui.circirdis_Btn, SIGNAL(clicked()), this, SLOT(on_circirdisBtn_clicked()));
+	connect(ui.linlindis_Btn, SIGNAL(clicked()), this, SLOT(on_linlindisBtn_clicked()));
+	connect(ui.radius_Btn, SIGNAL(clicked()), this, SLOT(on_radiusBtn_clicked()));
+	connect(ui.diameter_Btn, SIGNAL(clicked()), this, SLOT(on_diameterBtn_clicked()));
+	connect(ui.arcAngle_Btn, SIGNAL(clicked()), this, SLOT(on_arcAngleBtn_clicked()));
+	connect(ui.linlinAngle_Btn, SIGNAL(clicked()), this, SLOT(on_linlinAngleBtn_clicked()));
+	connect(ui.chamfer_Btn, SIGNAL(clicked()), this, SLOT(on_chamferBtn_clicked()));
+	connect(ui.perpendicularity_Btn, SIGNAL(clicked()), this, SLOT(on_perpendicularityBtn_clicked()));
+	connect(ui.roundness_Btn, SIGNAL(clicked()), this, SLOT(on_roundnessBtn_clicked()));
+	connect(ui.parallelism_Btn, SIGNAL(clicked()), this, SLOT(on_parallelismBtn_clicked()));
+	connect(ui.axiality_Btn, SIGNAL(clicked()), this, SLOT(on_axialityBtn_clicked()));
+	connect(ui.taper_Btn, SIGNAL(clicked()), this, SLOT(on_taperBtn_clicked()));
+	connect(ui.customArc_Btn, SIGNAL(clicked()), this, SLOT(on_customArcBtn_clicked()));
 
 }
 
 void QtWidgetsApplication1::paintEvent(QPaintEvent* event)
 {
-	QPainter painter(this);
-	painter.drawPixmap(10,50,fitpixmap);  //这里的起始点是一个个输入来测试得到的固定值，有待优化
+	//QPainter painter(this);
+	//painter.drawPixmap(10,50,fitpixmap);  //这里的起始点是一个个输入来测试得到的固定值，有待优化
+	// 缩放
+	//painter.scale(m_ZoomValue, m_ZoomValue);
+
+	// 绘制图像
+	//QRect picRect(-width / 2, -height / 2, width, height);
+	//painter.drawPixmap(10,50, fitpixmap);
+	//ui.Show_label->setPixmap(fitpixmap);
 }
 
+//清空
+void QtWidgetsApplication1::on_clearBtn_clicked() {
+	label_img->clearRect();
+	label_img->clearPoint();
+	label_img->onClearImage();
+}
+
+//导出
+void QtWidgetsApplication1::on_logBtn_clicked() {
+	QString fileName = QFileDialog::getSaveFileName(this,
+		QString::fromLocal8Bit("文件另存为"),
+		"",
+		tr("Config Files (*.txt)"));
+	label_img->onLogData(fileName);
+}
+
+//加载参数文件
+void QtWidgetsApplication1::on_loadparaBtn_clicked() {
+	clickedBtn = ClickedBtn(label_img->LoadParameter("SaveRect.txt"));
+}
+
+//图像重置
+void QtWidgetsApplication1::on_PresetBtn_clicked() {
+	label_img->onPresetImage();
+	label_img->clearRect();
+	label_img->clearPoint();
+}
+
+//获取测量对象
+int QtWidgetsApplication1::GetClicked(int x)
+{
+	return clickedBtn = (ClickedBtn)x;  //把数值赋予枚举变量，必须用强制类型转换。
+}
 
 //获取移动矩形框时的坐标
 void QtWidgetsApplication1::StartMoveRectSlot(QRectF Rect) {
@@ -132,7 +209,7 @@ void QtWidgetsApplication1::StartMoveRectSlot(QRectF Rect) {
 	double point_x = Rect.topLeft().x();
 	double point_y = Rect.topLeft().y();
 
-	label_img->getRect(curRect.topLeft(), curRect.bottomRight());
+	//label_img->getRect(curRect.topLeft(), curRect.bottomRight());
 
 	ui.lineEdit_start_x->setText(QString::number(point_x));
 	ui.lineEdit_start_y->setText(QString::number(point_y));
@@ -215,6 +292,316 @@ void QtWidgetsApplication1::StopPointSlot(QPointF p) {
 
 }
 
+//点击自定义圆弧按钮
+void QtWidgetsApplication1::on_customArcBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(2);      //自定义圆弧模式
+		label_img->getClickedBtn(24); //on_customArcBtn_clicked = 24
+		clickedBtn = ClickedBtn(24);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+	}
+}
+
+//点击圆度按钮
+void QtWidgetsApplication1::on_roundnessBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(0);      //元素模式
+		label_img->getClickedBtn(20); //on_roundnessBtn_clicked = 20
+		clickedBtn = ClickedBtn(20);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+
+		//关联开始移动矩形的信号
+		connect(label_img, SIGNAL(StartMoveRectSignal(QRectF)), this, SLOT(StartMoveRectSlot(QRectF)));
+
+		//关联结束移动矩形的信号
+		connect(label_img, SIGNAL(StopMoveRectSignal(QRectF)), this, SLOT(StopMoveRectSlot(QRectF)));
+	}
+}
+
+
+//点击锥度按钮
+void QtWidgetsApplication1::on_taperBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(1);      //测量模式
+		label_img->getClickedBtn(23); //on_taperBtn_clicked = 23
+		clickedBtn = ClickedBtn(23);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+	}
+}
+
+//点击同轴度按钮
+void QtWidgetsApplication1::on_axialityBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(1);      //测量模式
+		label_img->getClickedBtn(22); //on_axialityBtn_clicked = 22
+		clickedBtn = ClickedBtn(22);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+	}
+}
+
+//点击平行度按钮
+void QtWidgetsApplication1::on_parallelismBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(1);      //测量模式
+		label_img->getClickedBtn(21); //on_parallelismBtn_clicked = 21
+		clickedBtn = ClickedBtn(21);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+	}
+}
+
+//点击垂直度按钮
+void QtWidgetsApplication1::on_perpendicularityBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(1);      //测量模式
+		label_img->getClickedBtn(19); //on_perpendicularityBtn_clicked = 19
+		clickedBtn = ClickedBtn(19);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+	}
+}
+
+//点击倒角按钮
+void QtWidgetsApplication1::on_chamferBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(0);      //元素模式
+		label_img->getClickedBtn(18); //on_chamferBtn_clicked = 18
+		clickedBtn = ClickedBtn(18);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+
+		//关联开始移动矩形的信号
+		connect(label_img, SIGNAL(StartMoveRectSignal(QRectF)), this, SLOT(StartMoveRectSlot(QRectF)));
+
+		//关联结束移动矩形的信号
+		connect(label_img, SIGNAL(StopMoveRectSignal(QRectF)), this, SLOT(StopMoveRectSlot(QRectF)));
+	}
+}
+
+//点击圆弧角度按钮
+void QtWidgetsApplication1::on_arcAngleBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(0);      //元素模式
+		label_img->getClickedBtn(16); //on_arcAngleBtn_clicked = 16
+		clickedBtn = ClickedBtn(16);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+
+		//关联开始移动矩形的信号
+		connect(label_img, SIGNAL(StartMoveRectSignal(QRectF)), this, SLOT(StartMoveRectSlot(QRectF)));
+
+		//关联结束移动矩形的信号
+		connect(label_img, SIGNAL(StopMoveRectSignal(QRectF)), this, SLOT(StopMoveRectSlot(QRectF)));
+	}
+}
+
+//点击直径按钮
+void QtWidgetsApplication1::on_diameterBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(0);      //元素模式
+		label_img->getClickedBtn(15); //on_diameterBtn_clicked = 15
+		clickedBtn = ClickedBtn(15);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+
+		//关联开始移动矩形的信号
+		connect(label_img, SIGNAL(StartMoveRectSignal(QRectF)), this, SLOT(StartMoveRectSlot(QRectF)));
+
+		//关联结束移动矩形的信号
+		connect(label_img, SIGNAL(StopMoveRectSignal(QRectF)), this, SLOT(StopMoveRectSlot(QRectF)));
+	}
+}
+
+//点击圆半径按钮
+void QtWidgetsApplication1::on_radiusBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(0);      //元素模式
+		label_img->getClickedBtn(14); //on_cirRadiusBtn_clicked = 14
+		clickedBtn = ClickedBtn(14);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+
+		//关联开始移动矩形的信号
+		connect(label_img, SIGNAL(StartMoveRectSignal(QRectF)), this, SLOT(StartMoveRectSlot(QRectF)));
+
+		//关联结束移动矩形的信号
+		connect(label_img, SIGNAL(StopMoveRectSignal(QRectF)), this, SLOT(StopMoveRectSlot(QRectF)));
+	}
+}
 
 //点击点-线距离按钮
 void QtWidgetsApplication1::on_ptlindisBtn_clicked()
@@ -228,7 +615,8 @@ void QtWidgetsApplication1::on_ptlindisBtn_clicked()
 	else
 	{
 		label_img->getMode(1);      //测量模式
-		label_img->getClickedBtn(6); //on_ptlindisBtn_clicked = 5
+		label_img->getClickedBtn(6); //on_ptlindisBtn_clicked = 6
+		clickedBtn = ClickedBtn(6);
 		cv::destroyAllWindows();
 		//设置边框颜色
 		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
@@ -263,6 +651,91 @@ void QtWidgetsApplication1::on_ptptdisBtn_clicked()
 	{
 		label_img->getMode(1);      //测量模式
 		label_img->getClickedBtn(5); //on_ptptdisBtn_clicked = 5
+		clickedBtn = ClickedBtn(5);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+	}
+}
+
+//点击线线距离按钮
+void QtWidgetsApplication1::on_linlindisBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(1);      //测量模式
+		label_img->getClickedBtn(13); //on_linlindisBtn_clicked = 13
+		clickedBtn = ClickedBtn(13);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+	}
+}
+
+//点击线线角度按钮
+void QtWidgetsApplication1::on_linlinAngleBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(1);      //测量模式
+		label_img->getClickedBtn(17); //on_linlinAngleBtn_clicked = 17
+		clickedBtn = ClickedBtn(17);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+	}
+}
+
+//点击直线交点按钮
+void QtWidgetsApplication1::on_intersectionBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(1);      //测量模式
+		label_img->getClickedBtn(9); //on_intersectionBtn_clicked = 9
+		clickedBtn = ClickedBtn(9);
 		cv::destroyAllWindows();
 		//设置边框颜色
 		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
@@ -291,6 +764,134 @@ void QtWidgetsApplication1::on_circleBtn_clicked()
 	{
 		label_img->getMode(0);      //元素模式
 		label_img->getClickedBtn(3); //on_circleBtn_clicked = 3
+		clickedBtn = ClickedBtn(3);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+
+		//关联开始移动矩形的信号
+		connect(label_img, SIGNAL(StartMoveRectSignal(QRectF)), this, SLOT(StartMoveRectSlot(QRectF)));
+
+		//关联结束移动矩形的信号
+		connect(label_img, SIGNAL(StopMoveRectSignal(QRectF)), this, SLOT(StopMoveRectSlot(QRectF)));
+	}
+}
+
+//点击圆圆距离按钮
+void QtWidgetsApplication1::on_circirdisBtn_clicked()
+{
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(1);      //测量模式，需要画两个框找到两个圆
+		label_img->getClickedBtn(12); //on_circirdisBtn_clicked = 12
+		clickedBtn = ClickedBtn(12);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+	}
+}
+
+//点击圆圆切点按钮
+void QtWidgetsApplication1::on_circirtanBtn_clicked()
+{
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(1);      //测量模式，需要画两个框找到两个圆
+		label_img->getClickedBtn(11); //on_circirtanBtn_clicked = 11
+		clickedBtn = ClickedBtn(11);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+
+	}
+}
+
+//点击圆-线切点按钮
+void QtWidgetsApplication1::on_cirlintanBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(0);      //元素模式
+		label_img->getClickedBtn(8); //on_arclintanBtn_clicked = 8
+		clickedBtn = ClickedBtn(8);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+
+		//关联开始移动矩形的信号
+		connect(label_img, SIGNAL(StartMoveRectSignal(QRectF)), this, SLOT(StartMoveRectSlot(QRectF)));
+
+		//关联结束移动矩形的信号
+		connect(label_img, SIGNAL(StopMoveRectSignal(QRectF)), this, SLOT(StopMoveRectSlot(QRectF)));
+	}
+}
+
+//点击圆弧中心按钮
+void QtWidgetsApplication1::on_arcmidBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(0);      //元素模式
+		label_img->getClickedBtn(7); //on_arcmidBtn_clicked = 7
+		clickedBtn = ClickedBtn(7);
 		cv::destroyAllWindows();
 		//设置边框颜色
 		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
@@ -324,6 +925,7 @@ void QtWidgetsApplication1::on_arcBtn_clicked() {
 	{
 		label_img->getMode(0);      //元素模式
 		label_img->getClickedBtn(4); //on_arcBtn_clicked = 4
+		clickedBtn = ClickedBtn(4);
 		cv::destroyAllWindows();
 		//设置边框颜色
 		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
@@ -358,6 +960,7 @@ void QtWidgetsApplication1::on_ctrlinBtn_clicked()
 	{
 		label_img->getMode(0);      //元素模式
 		label_img->getClickedBtn(2); //on_ctrlinBtn_clicked = 2
+		clickedBtn = ClickedBtn(2);
 		cv::destroyAllWindows();
 		//设置边框颜色
 		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
@@ -391,6 +994,41 @@ void QtWidgetsApplication1::on_peaklinBtn_clicked() {
 	{
 		label_img->getMode(0);      //元素模式
 		label_img->getClickedBtn(1);  //on_peakLinBtn_clicked = 1
+		clickedBtn = ClickedBtn(1);
+		cv::destroyAllWindows();
+		//设置边框颜色
+		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
+		//设置位置大小和Show_label一样
+		//label_img->setGeometry(10, 10, 640, 640);
+		//自定义label添加到布局,并在其中添加widget存放label_img
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
+		//关联开始坐标的信号
+		connect(label_img, SIGNAL(StartPointSignal(QPointF)), this, SLOT(StartPointSlot(QPointF)));
+
+		//关联结束坐标的信号
+		connect(label_img, SIGNAL(StopPointSignal(QPointF)), this, SLOT(StopPointSlot(QPointF)));
+
+		//关联开始移动矩形的信号
+		connect(label_img, SIGNAL(StartMoveRectSignal(QRectF)), this, SLOT(StartMoveRectSlot(QRectF)));
+
+		//关联结束移动矩形的信号
+		connect(label_img, SIGNAL(StopMoveRectSignal(QRectF)), this, SLOT(StopMoveRectSlot(QRectF)));
+	}
+}
+
+//点击 线段中心 按钮
+void QtWidgetsApplication1::on_linmidBtn_clicked() {
+	label_img->clearRect();//清除当前矩形框数据
+	label_img->clearPoint();//清除当前交点数据
+	if (fitpixmap.isNull() && capture == NULL)
+	{
+		NoPhoto_Dialog();
+	}
+	else
+	{
+		label_img->getMode(0);      //元素模式
+		label_img->getClickedBtn(10); //on_linmidBtn_clicked = 10
+		clickedBtn = ClickedBtn(10);
 		cv::destroyAllWindows();
 		//设置边框颜色
 		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)");
@@ -425,6 +1063,7 @@ void QtWidgetsApplication1::on_lineBtn_clicked()
 	{
 		label_img->getMode(0);      //元素模式
 		label_img->getClickedBtn(0);
+		clickedBtn = ClickedBtn(0);
 		cv::destroyAllWindows();
 		//设置边框颜色
 		label_img->setStyleSheet("border:1px solid rgb(0, 0, 0)"); 
@@ -461,21 +1100,27 @@ void QtWidgetsApplication1::trigerMenu(QAction* act)
 			tr("choose file directory"),
 			"C:",
 			tr("file(*png *jpg *bmp *tiff)"));
-		cv::Mat img = cv::imread(fileName.toLocal8Bit().toStdString());//加载图像（路径可包含中文字符）
+		srcImage = cv::imread(fileName.toLocal8Bit().toStdString());//加载图像（路径可包含中文字符）
 
 
-		pixmap = QPixmap::fromImage(cvMatToQImage(img));
+		pixmap = QPixmap::fromImage(cvMatToQImage(srcImage));
 
 		int width = ui.Show_label->width();
 		int height = ui.Show_label->height();
 		//QPixmap fitpixmap = pixmap.scaled(with, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // 饱满填充
 		fitpixmap = pixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);  // 按比例缩放
-		int cur_width = fitpixmap.size().width();
-		int origin_width = pixmap.size().width();
+		//fitpixmap = pixmap;
+		float cur_width = fitpixmap.size().width();
+		float origin_width = pixmap.size().width();
 		scaled_ratio = origin_width/ cur_width;
-
+		ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);
 		label_img->getPix(fitpixmap);
+		label_img->getSrc(srcImage,scaled_ratio);
 
+		label_img->onPresetImage();
+		label_img->getMode(0);
+		label_img->clearRect();
+		label_img->clearPoint();
 		//ui.Show_label->setPixmap(fitpixmap);
 		update();
 
@@ -795,6 +1440,7 @@ int QtWidgetsApplication1::OpenDevice() {
 
 
 	m_bOpenDevice = TRUE;
+	label_img->deviceOpened = 1;
 	EnableControls(TRUE);
 	on_GetParameterBtn_clicked(); // ch:获取参数 | en:Get Parameter
 	return MV_OK;
@@ -812,6 +1458,7 @@ void QtWidgetsApplication1::on_OpenDeviceBtn_clicked() {
 void QtWidgetsApplication1::on_CloseDeviceBtn_clicked()
 {
 	CloseDevice();
+	label_img->deviceOpened = 0;
 	EnableControls(TRUE);
 }
 
@@ -905,7 +1552,6 @@ bool QtWidgetsApplication1::Convert2Mat(MV_FRAME_OUT_INFO_EX* pstImageInfo, unsi
 	int cur_width = fitpixmap.size().width();
 	int origin_width = pixmap.size().width();
 	scaled_ratio = origin_width / cur_width;
-
 	label_img->getPix(fitpixmap);
 
 	//ui.Show_label->setPixmap(fitpixmap);
@@ -1015,7 +1661,7 @@ void QtWidgetsApplication1::on_StartGrabbingBtn_clicked()
 			pData = NULL;
 			return;
 		}
-	
+		m_pcMyCamera->SetFloatValue("ExposureTime", 500);
 	m_bStartGrabbing = TRUE;
 	EnableControls(TRUE);
 
@@ -1096,14 +1742,118 @@ void QtWidgetsApplication1::on_StartGrabbingBtn_clicked()
 			int cur_width = fitpixmap.size().width();
 			int origin_width = pixmap.size().width();
 			scaled_ratio = origin_width / cur_width;
-
+			ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);//用于在Showlabel中显示
 			label_img->getPix(fitpixmap);
-
+			label_img->getSrc(srcImage, scaled_ratio);
 			update();
 
 		}
 		else if (m_nTriggerMode == MV_TRIGGER_MODE_ON) {
-			break;
+			//硬触发模式
+			if (ui.TriggerSrc_Btn->currentText() == (QString::fromLocal8Bit("硬触发"))) {
+
+				nRet = m_pcMyCamera->SetEnumValue("TriggerMode", 1);
+				if (MV_OK != nRet)
+				{
+					printf("Set Trigger Mode fail! nRet [0x%x]\n", nRet);
+					return;
+				}
+				delayTimeBegin = timeGetTime();
+				m_nTriggerSource = MV_TRIGGER_SOURCE_LINE0;
+				int nRet = m_pcMyCamera->SetEnumValue("TriggerSource", m_nTriggerSource);
+				if (MV_OK != nRet)
+				{
+					printf("Set hardware trigger fail");
+					return;
+				}
+
+				// Get payload size
+				MV_FRAME_OUT_INFO_EX stImageInfo = { 0 };
+				memset(&stImageInfo, 0, sizeof(MV_FRAME_OUT_INFO_EX));
+				unsigned char* pData = (unsigned char*)malloc(sizeof(unsigned char) * (g_nPayloadSize));
+				if (pData == NULL)
+				{
+					printf("Allocate memory failed.\n");
+					return;
+				}
+
+				// get one frame from camera with timeout=1000ms
+				//nRet = MV_CC_GetOneFrameTimeout(m_hGrabThread, pData, g_nPayloadSize, &stImageInfo, 1000);
+				nRet = m_pcMyCamera->GetOneFrameTimeout(pData, g_nPayloadSize, &stImageInfo, 1000);
+				if (nRet == MV_OK)
+				{
+					printf("Get One Frame: Width[%d], Height[%d], nFrameNum[%d]\n",
+						stImageInfo.nWidth, stImageInfo.nHeight, stImageInfo.nFrameNum);
+				}
+				else
+				{
+					PopDialog("No data");
+					printf("No data[0x%x]\n", nRet);
+					free(pData);
+					pData = NULL;
+					return;
+				}
+
+
+				MV_FRAME_OUT_INFO_EX* pstImageInfo = &stImageInfo;
+				if (pstImageInfo->enPixelType == PixelType_Gvsp_Mono8)
+				{
+					srcImage = cv::Mat(pstImageInfo->nHeight, pstImageInfo->nWidth, CV_8UC1, pData);
+					
+					//cv::imshow("srcimg", srcImage);
+					cv::waitKey(5);
+				}
+				else if (pstImageInfo->enPixelType == PixelType_Gvsp_RGB8_Packed)
+				{
+					RGB2BGR(pData, pstImageInfo->nWidth, pstImageInfo->nHeight);
+					srcImage = cv::Mat(pstImageInfo->nHeight, pstImageInfo->nWidth, CV_8UC3, pData);
+					//cv::imshow("srcimg", srcImage);
+					cv::waitKey(5);
+				}
+				else
+				{
+					printf("unsupported pixel format\n");
+					return;
+				}
+
+				if (NULL == srcImage.data)
+				{
+					return;
+				}
+
+
+				pixmap = QPixmap::fromImage(cvMatToQImage(srcImage));
+				int width = ui.Show_label->width();
+				int height = ui.Show_label->height();
+				//QPixmap fitpixmap = pixmap.scaled(with, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);  // 饱满填充
+				fitpixmap = pixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);  // 按比例缩放
+				int cur_width = fitpixmap.size().width();
+				int origin_width = pixmap.size().width();
+				scaled_ratio = origin_width / cur_width;
+				ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);//用于在Showlabel中显示
+				label_img->getPix(fitpixmap);
+				label_img->getSrc(srcImage, scaled_ratio);
+				if (clickedBtn == lineBtn_clicked) {
+					if (!label_img->cv_dst.empty()) {
+						label_img->getDistrict();
+					}
+				}
+				else if (clickedBtn == customArcBtn_clicked) {
+					if (!label_img->cv_dst.empty()) {
+						label_img->getDistrict();
+					}
+				}
+				else if (clickedBtn == linlindisBtn_clicked) {
+					if (!label_img->cv_dst.empty()) {
+						label_img->getDistrict();
+					}
+				}
+				delayTimeEnd = timeGetTime();
+				processTime = delayTimeEnd - delayTimeBegin;
+			}
+			else {
+				break;
+			}
 		}
 
 	}
@@ -1142,6 +1892,7 @@ void QtWidgetsApplication1::on_StopGrabbingBtn_clicked()
 void QtWidgetsApplication1::on_CtnModeBtn_clicked() {
 	
 	m_nTriggerMode = MV_TRIGGER_MODE_OFF;
+	label_img->triggerMode = 0;
 
 	/*
 	int nRet = m_pcMyCamera->SetEnumValue("TriggerMode", MV_TRIGGER_MODE_OFF);
@@ -1156,6 +1907,7 @@ void QtWidgetsApplication1::on_CtnModeBtn_clicked() {
 void QtWidgetsApplication1::on_TriggerModeBtn_clicked() {
 	
 	m_nTriggerMode = MV_TRIGGER_MODE_ON;
+	label_img->triggerMode = 1;
 	/*
 	int nRet = m_pcMyCamera->SetEnumValue("TriggerMode", MV_TRIGGER_MODE_ON);
 	if (MV_OK != nRet)
@@ -1163,6 +1915,15 @@ void QtWidgetsApplication1::on_TriggerModeBtn_clicked() {
 		printf("Set Trigger Mode fail! nRet [0x%x]\n", nRet);
 		return;
 	}*/
+	if (m_bOpenDevice) {
+		m_nTriggerSource = MV_TRIGGER_SOURCE_LINE0;
+		int nRet = m_pcMyCamera->SetEnumValue("TriggerSource", m_nTriggerSource);
+		if (MV_OK != nRet)
+		{
+			printf("Set hardware trigger fail");
+			return;
+		}
+	}
 }
 
 // ch:按下软触发一次按钮
@@ -1239,9 +2000,9 @@ void QtWidgetsApplication1::on_SoftTriggerBtn_clicked() {
 	int cur_width = fitpixmap.size().width();
 	int origin_width = pixmap.size().width();
 	scaled_ratio = origin_width / cur_width;
-
+	ui.photo_layout->addWidget(label_img, 0, 0, 1, 1);//用于在Showlabel中显示
 	label_img->getPix(fitpixmap);
-
+	label_img->getSrc(srcImage, scaled_ratio);
 	update();
 }
 
@@ -1260,6 +2021,13 @@ void QtWidgetsApplication1::on_SetParameterBtn_clicked() {
 	{
 		bIsSetSucceed = false;
 		PopDialog("Set Gain Fail");
+		//ShowErrorMsg(TEXT("Set Gain Fail"), nRet);
+	}
+	nRet = SetFrameRate();
+	if (nRet != MV_OK)
+	{
+		bIsSetSucceed = false;
+		PopDialog("Set FrameRate Fail");
 		//ShowErrorMsg(TEXT("Set Gain Fail"), nRet);
 	}
 	if (true == bIsSetSucceed)
@@ -1282,6 +2050,12 @@ void QtWidgetsApplication1::on_GetParameterBtn_clicked() {
 	if (nRet != MV_OK)
 	{
 		PopDialog("Get Gain Fail");
+		//ShowErrorMsg(TEXT("Get Gain Fail"), nRet);
+	}
+	nRet = GetFrameRate();
+	if (nRet != MV_OK)
+	{
+		PopDialog("Get FrameRate Fail");
 		//ShowErrorMsg(TEXT("Get Gain Fail"), nRet);
 	}
 }
@@ -1343,6 +2117,33 @@ int QtWidgetsApplication1::SetGain()
 	return m_pcMyCamera->SetFloatValue("Gain", ui.GainEdit->text().toFloat());
 }
 
+// ch:获取帧率 | en:Get Frame Rate
+int QtWidgetsApplication1::GetFrameRate()
+{
+	MVCC_FLOATVALUE stFloatValue = { 0 };
+
+	int nRet = m_pcMyCamera->GetFloatValue("ResultingFrameRate", &stFloatValue);
+	if (MV_OK != nRet)
+	{
+		return nRet;
+	}
+	ui.FrameEdit->setText(QString("%1").arg(int(stFloatValue.fCurValue)));
+
+	return MV_OK;
+}
+
+// ch:设置帧率 | en:Set Frame Rate
+int QtWidgetsApplication1::SetFrameRate()
+{
+	int nRet = m_pcMyCamera->SetBoolValue("AcquisitionFrameRateEnable", true);
+	if (MV_OK != nRet)
+	{
+		return nRet;
+	}
+
+	return m_pcMyCamera->SetFloatValue("AcquisitionFrameRate", ui.FrameEdit->text().toFloat());
+}
+
 // ch:保存BMP图片
 void QtWidgetsApplication1::on_SaveBMPBtn_clicked() {
 
@@ -1389,6 +2190,15 @@ void QtWidgetsApplication1::EnableControls(BOOL bIsCameraReady)
 	ui.CloseDevice_Btn->setEnabled((m_bOpenDevice && bIsCameraReady) ? TRUE : FALSE);
 	ui.StartGrabbing_Btn->setEnabled((m_bStartGrabbing && bIsCameraReady) ? FALSE : (m_bOpenDevice ? TRUE : FALSE));
 	ui.StopGrabbing_Btn->setEnabled(m_bStartGrabbing ? TRUE : FALSE);
-	
+	ui.SoftTrigger_Btn->setEnabled(m_bStartGrabbing && ui.TriggerMode_Btn->isChecked()&& ui.TriggerSrc_Btn->currentText() == (QString::fromLocal8Bit("软触发")) ? TRUE : FALSE);
+	ui.LoadPara_Btn->setEnabled(m_bOpenDevice && m_bStartGrabbing ? TRUE : FALSE);
+	//ui.TriggerSrc_Btn->setEnabled(m_bStartGrabbing  ? TRUE : FALSE);
+	ui.SetParameter_Btn->setEnabled(m_bOpenDevice&& m_bOpenDevice ? TRUE : FALSE);
+	ui.GetParameter_Btn->setEnabled(m_bOpenDevice ? TRUE : FALSE);
+	ui.SaveJPG_Btn->setEnabled(m_bStartGrabbing ? TRUE : FALSE);
+	ui.SaveBMP_Btn->setEnabled(m_bStartGrabbing ? TRUE : FALSE);
+	ui.SavePNG_Btn->setEnabled(m_bStartGrabbing ? TRUE : FALSE);
+	ui.SaveTIFF_Btn->setEnabled(m_bStartGrabbing ? TRUE : FALSE);
+
 
 }
